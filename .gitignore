@@ -12,3 +12,7 @@ experiments/reference/exported/checkpoint
 
 # student bash
 .student_bashrc
+
+
+# checkpoints
+.ipynb_checkpoints/*
