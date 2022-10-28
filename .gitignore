@@ -2,13 +2,15 @@
 data/*
 
 # tfevents
-experiments/reference/experiment_1/train/*
-experiments/reference/experiment_1/eval/*
 
-experiments/reference/experiment_2/train/*
-experiments/reference/experiment_2/eval/*
+# ingore experiments/reference folder except pipeline.config and saved_model.pb
+*.v2
+*.data*
+*.index
+checkpoint
 
-experiments/reference/exported/checkpoint
+
+
 
 # student bash
 .student_bashrc
@@ -16,3 +18,4 @@ experiments/reference/exported/checkpoint
 
 # checkpoints
 .ipynb_checkpoints/*
+
