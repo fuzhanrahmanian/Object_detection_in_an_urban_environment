@@ -1,6 +1,85 @@
 # Object Detection in an Urban Environment
 
-## Data
+### Data Science Nanodegree - Computer vision chapter from Udacity
+
+![overview](animation.gif)
+
+## Table of Contents
+
+1. [Project Description](#description)
+2. [Getting Started](#getting_started)
+   1. [Dependencies](#dependencies)
+   2. [Installation](#installation)
+   3. [Execution](#execution)
+
+3. [Authors](#authors)
+4. [License](#license)
+5. [Acknowledgement](#acknowledgement)
+
+
+
+<a name="descripton"></a>
+## Description
+
+
+This Project is part of Data Science Nanodegree Program by Udacity. The goal of the project is to deploy a model with different hyperparameters and augmentations to train a neural network for detecting and classifying objects.This deployment is done using tensorflow object detection API for detecting 3 classes of vehicles, pedestrians and cyclists.
+
+The dataset presented in this project is from [Waymo Open dataset](https://waymo.com/open/) and contains of urban environments images.
+
+This project is divided in the following sections:
+
+## File Description
+~~~~~~~
+        disaster_response_pipeline
+        |-- data      #tfrecord sample files for object detection api format
+                |-- test
+                |-- val
+                |-- train
+        |-- examples    # example urban images containing their bounding boxes
+                |-- training_examples
+                |-- validation examples
+        |-- experiments
+                |-- exporter_main_v2.py
+                |-- label_map.pbtxt
+                |-- model_main_tf2.py
+                |-- reference
+                        |-- experiment_1
+                                |-- pipeline_new.config
+                        |-- experiment_2
+                                |-- pipeline.config
+                        |-- experiment_3
+                                |-- pipeline_new.config
+                        |-- exported
+                                |-- saved_model
+                                        |-- saved_model.pb
+                                |-- pipeline.config
+        |-- animation.gif
+        |-- edit_config.py
+        |-- Exploratory Data Analysis.ipynb
+        |-- Explore augmentations.ipynb
+        |-- filenames.txt
+        |-- inference_video.py
+        |-- label_map.pbtxt
+        |-- launch_jupyter.sh
+        |-- requirements.txt
+        |-- utils.py
+        |-- README.md
+          |-- data
+                |-- disaster_message.csv        # data to process
+                |-- disaster_categories.csv     # data to process
+                |-- DisasterResponse.db         # database contains clean data
+                |-- process_data.py             # script for building an ETL pipeline and data cleaning
+          |-- models
+                |-- classifier.pkl              # saved model
+                |-- train_classifier.py         # script for building a ML pipeline
+          |-- notebooks
+                |-- ETL Pipeline Preparation.ipynb
+                |-- ETL_Preparation.db
+          |-- README
+~~~~~~~
+
+
+<!-- ## Data
 
 For this project, we will be using data from the [Waymo Open dataset](https://waymo.com/open/).
 
@@ -21,7 +100,6 @@ The data you will use for training, validation and testing is organized as follo
 The `training_and_validation` folder contains file that have been downsampled: we have selected one every 10 frames from 10 fps videos. The `testing` folder contains frames from the 10 fps video without downsampling.
 ```
 You will split this `training_and_validation` data into `train`, and `val` sets by completing and executing the `create_splits.py` file.
-
 
 ### Experiments
 The experiments folder will be organized as follow:
@@ -70,7 +148,6 @@ In the classroom workspace, every library and package should already be installe
 You should use the data already present in `/home/workspace/data/waymo` directory to explore the dataset! This is the most important task of any machine learning project. To do so, open the `Exploratory Data Analysis` notebook. In this notebook, your first task will be to implement a `display_instances` function to display images and annotations using `matplotlib`. This should be very similar to the function you created during the course. Once you are done, feel free to spend more time exploring the data and report your findings. Report anything relevant about the dataset in the writeup.
 
 Keep in mind that you should refer to this analysis to create the different spits (training, testing and validation).
-
 
 ### Create the training - validation splits
 In the class, we talked about cross-validation and the importance of creating meaningful training and validation splits. For this project, you will have to create your own training and validation sets using the files located in `/home/workspace/data/waymo`. The `split` function in the `create_splits.py` file does the following:
@@ -122,7 +199,6 @@ Keep in mind that the following are also available:
 
 **Important:** If you are working on the workspace, your storage is limited. You may to delete the checkpoints files after each experiment. You should however keep the `tf.events` files located in the `train` and `eval` folder of your experiments. You can also keep the `saved_model` folder to create your videos.
 
-
 ### Creating an animation
 #### Export the trained model
 Modify the arguments of the following function to adjust it to your models:
@@ -157,4 +233,26 @@ This section should detail the cross validation strategy and justify your approa
 This section should detail the results of the reference experiment. It should includes training metrics and a detailed explanation of the algorithm's performances.
 
 #### Improve on the reference
-This section should highlight the different strategies you adopted to improve your model. It should contain relevant figures and details of your findings.
+This section should highlight the different strategies you adopted to improve your model. It should contain relevant figures and details of your findings. -->
+
+<a name="authors"></a>
+
+## Author
+
+* [Fuzhan Rahmanian](https://github.com/fuzhanrahmanian)
+
+<a name="license"></a>
+
+## License
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+<a name="acknowledgement"></a>
+
+## Acknowledgements
+
+* [Udacity](https://www.udacity.com/) for providing Data Science Nanodegree Program and this project.
+* [Waymo Open dataset](https://waymo.com/open/) for providing the urban environments dataset containing annotated cyclists, pedestrians and vehicles.
+* [Bosch GmbH](https://www.bosch.de/) for sponsoring this Nanodegree.
+
+<a name="Application"></a>
