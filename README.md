@@ -22,7 +22,7 @@
 ## Description
 
 
-This Project is part of Data Science Nanodegree Program by Udacity. The goal of the project is to deploy a model with different hyperparameters and augmentations to train a neural network for detecting and classifying objects.This deployment is done using tensorflow object detection API for detecting 3 classes of vehicles, pedestrians and cyclists.
+This Project is part of Data Science Nanodegree Program by Udacity. The goal of the project is to deploy a model with different hyperparameters and augmentations to train a neural network for detecting and classifying objects which is one of the crucial subject in autonomous driving. This deployment is done using tensorflow object detection API for detecting 3 classes of vehicles, pedestrians and cyclists.
 
 
 
@@ -134,7 +134,7 @@ Alternatively you can run `./launch_jupyter.sh` in the workspace directory.
 
 Following steps should be taken into account in order to run and complete the project.
 
-####Step 1:: Exploratory Data Analysis (EDA)
+#### Step 1:: Exploratory Data Analysis (EDA)
 Exploring the dataset can be accomplished in this jupyter notebook. By displaying the images, we can get an overall picture about the data available in `data\` folder. Another task that we are having in this notebook is to create color-coded bounding boxes and annotate them for each class object using `matplotlib` library. In this work, red correspondent to vehicles, blue to pedestrians and green for cyclist class.
 
 <p float="left">
@@ -158,7 +158,7 @@ Additionally, in order to study the distribution between different objects, a ba
 
 As a class imbalanced can be seen in the data distribution, it can be suggested to apply some oversampling techniques (i.e. augmentation using generative models) in order model can learn and generalize better and subsequently give more accurate and reliable predictions.
 
-####Step 2: download the pretrained model and edit the config file.
+#### Step 2: download the pretrained model and edit the config file.
 
 For this project, we are using Single Shot Detector (SSD) ResNet 50 640x640 model. Therefore, we need to download the pretrained model.
 
@@ -178,7 +178,7 @@ tar -xvzf ssd_resnet50_v1_fpn_640x640_coco17_tpu-8.tar.gz
 rm -rf ssd_resnet50_v1_fpn_640x640_coco17_tpu-8.tar.gz
 
 ```
-####Step3: Training
+#### Step3: Training
 The first training can be launch by the following command:
 ```
 python experiments/model_main_tf2.py --model_dir=experiments/reference/experiment_1/ --pipeline_config_path=experiments/reference/experiment_1/pipeline_new.config
@@ -199,54 +199,29 @@ python -m tensorboard.main --logdir experiments/reference/experiment_1/
 
 <img src="images/training_1/tensorboard_1.png"/>
 
-<!--
+In the image above, the loss trend of the training is shown in orange and one epoch of evaluation can be seen with a blue dot.
+In normalized total loss value, it can be seen, the diagram did not completely reach to a Plateau and loss values fluctuated considerably during the training. Additionally, one epoch of evaluation is almost on the curve of the training loss. It is possible that we are having underfitting. In order to improve the model performance, we can increase the epoch numbers and as the chance of overfitting might increase then it is suggested to add some augmentations. In order to apply suitable augmentation methods available in  `preprocessor.proto` from Tf object detection API, we will work on the provided jupyter notebook `Explore augmentations.ipynb`.
 
-### Improve the performances
 
-Most likely, this initial experiment did not yield optimal results. However, you can make multiple changes to the config file to improve this model. One obvious change consists in improving the data augmentation strategy. The [`preprocessor.proto`](https://github.com/tensorflow/models/blob/master/research/object_detection/protos/preprocessor.proto) file contains the different data augmentation method available in the Tf Object Detection API. To help you visualize these augmentations, we are providing a notebook: `Explore augmentations.ipynb`. Using this notebook, try different data augmentation combinations and select the one you think is optimal for our dataset. Justify your choices in the writeup.
+The techniques that considered for improving the model performance are adjusting the contrast between 0.7 to 1.1, adjusting brightness with the max delta of 0.4, adjusting saturation between 0.6 to 1.1 and applying grayscale conversion with the probability of 0.15 as we are having dark, blended edges, and not vivid scenes. These modifications can be found in `experiments/reference/experiment_2/pipeline.config` file.
 
-Keep in mind that the following are also available:
-* experiment with the optimizer: type of optimizer, learning rate, scheduler etc
-* experiment with the architecture. The Tf Object Detection API [model zoo](https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/tf2_detection_zoo.md) offers many architectures. Keep in mind that the `pipeline.config` file is unique for each architecture and you will have to edit it.
+<p float="left">
+  <img src="images/augmentation/output.png" width="300" />
+  <img src="images/augmentation/output_1.png" width="300" />
+  <img src="images/augmentation/output_3.png" width="300" />
+</p>
 
-**Important:** If you are working on the workspace, your storage is limited. You may to delete the checkpoints files after each experiment. You should however keep the `tf.events` files located in the `train` and `eval` folder of your experiments. You can also keep the `saved_model` folder to create your videos.
+<p float="left">
+  <img src="images/augmentation/output_4.png" width="300" />
+  <img src="images/augmentation/output_5.png" width="300" />
+  <img src="images/augmentation/output_6.png" width="300" />
+</p>
 
-### Creating an animation
-#### Export the trained model
-Modify the arguments of the following function to adjust it to your models:
+After retraining, it can be seen that the loss in compare to the previous non-augmentaed model, significantly decreases (i.e. total and regaularization loss decreases from 5.5 to 1.4 and 4.4 to 0.48 respectively). Additionally, less flactuations can be seen in all various losses (classification, localization and total). In overall an improvement in model training can be seen. However, it is visible that the one epoch evaluation loss slightly diverge from the training loss which indicate a bit of overfitting. As it was mentioned at the beginning, the dataset in unbalanced and oversampling might improve the model generalization and performance as well as decreasing further (i.e. adding more samples with pedestrians and cyclists)
 
-```
-python experiments/exporter_main_v2.py --input_type image_tensor --pipeline_config_path experiments/reference/pipeline_new.config --trained_checkpoint_dir experiments/reference/ --output_directory experiments/reference/exported/
-```
+<img src="images/training_2/tensorboard_1.png"/>
 
-This should create a new folder `experiments/reference/exported/saved_model`. You can read more about the Tensorflow SavedModel format [here](https://www.tensorflow.org/guide/saved_model).
 
-Finally, you can create a video of your model's inferences for any tf record file. To do so, run the following command (modify it to your files):
-```
-python inference_video.py --labelmap_path label_map.pbtxt --model_path experiments/reference/exported/saved_model --tf_record_path /data/waymo/testing/segment-12200383401366682847_2552_140_2572_140_with_camera_labels.tfrecord --config_path experiments/reference/pipeline_new.config --output_path animation.gif
-```
-
-## Submission Template
-
-### Project overview
-This section should contain a brief description of the project and what we are trying to achieve. Why is object detection such an important component of self driving car systems?
-
-### Set up
-This section should contain a brief description of the steps to follow to run the code for this repository.
-
-### Dataset
-#### Dataset analysis
-This section should contain a quantitative and qualitative description of the dataset. It should include images, charts and other visualizations.
-#### Cross validation
-This section should detail the cross validation strategy and justify your approach.
-
-### Training
-#### Reference experiment
-This section should detail the results of the reference experiment. It should includes training metrics and a detailed explanation of the algorithm's performances.
-
-#### Improve on the reference
-This section should highlight the different strategies you adopted to improve your model. It should contain relevant figures and details of your findings. --> 
-<a name="authors"></a>
 
 ## Author
 
